@@ -263,7 +263,21 @@ public class MainView extends BaseView {
     }
 
     private void abrirVentanaOrdenamientos() {
-        OrdenamientoView ventanaOrdenamientos = new OrdenamientoView(this);
+        // Verificar si hay datos cargados
+        if (graphPanel.getData() == null || graphPanel.getData().length == 0) {
+            JOptionPane.showMessageDialog(this,
+                    "Tenés que cargar datos primero antes de ordenar.",
+                    "Sin datos",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Pasar los datos cargados a OrdenamientoView
+        OrdenamientoView ventanaOrdenamientos = new OrdenamientoView(this,
+                graphPanel.getData(),
+                graphPanel.getXAxisLabel(),
+                graphPanel.getYAxisLabel(),
+                fileTitleField.getText());
         ventanaOrdenamientos.setVisible(true);
     }
 }

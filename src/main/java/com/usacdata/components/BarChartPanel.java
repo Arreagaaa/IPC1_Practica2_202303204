@@ -35,6 +35,18 @@ public class BarChartPanel extends JPanel {
         repaint();
     }
 
+    public DataPoint[] getData() {
+        return this.dataPoints;
+    }
+
+    public String getXAxisLabel() {
+        return this.xAxisLabel;
+    }
+
+    public String getYAxisLabel() {
+        return this.yAxisLabel;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
