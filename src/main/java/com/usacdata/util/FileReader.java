@@ -21,8 +21,12 @@ public class FileReader {
                 return null;
             }
 
-            boolean isCsvFile = fileName.endsWith(".csv");
-            String separator = isCsvFile ? "," : ":";
+            // Detectar separador basado en el contenido
+            String separator = detectSeparator(file);
+            if (separator == null) {
+                errorMessage = "No se pudo detectar el formato del archivo. Asegúrese de que sea un archivo CSV válido.";
+                return null;
+            }
 
             // Primero contamos las líneas para dimensionar el array
             int validLines = 0;
@@ -91,6 +95,39 @@ public class FileReader {
 
         } catch (Exception e) {
             errorMessage = "Error al leer el archivo: " + e.getMessage();
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // Método para detectar automáticamente el separador
+    private String detectSeparator(File file) {
+        try {
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(new FileInputStream(file)));
+
+            // Leer la primera línea
+            String headerLine = reader.readLine();
+            reader.close();
+
+            if (headerLine == null) {
+                return null;
+            }
+
+            // Verificar si contiene comas
+            if (headerLine.contains(",")) {
+                return ",";
+            }
+
+            // Verificar si contiene dos puntos
+            if (headerLine.contains(":")) {
+                return ":";
+            }
+
+            // Si no se detecta ningún separador conocido
+            return null;
+
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
