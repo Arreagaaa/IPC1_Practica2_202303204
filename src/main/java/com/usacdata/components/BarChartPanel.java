@@ -50,13 +50,15 @@ public class BarChartPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
 
+        // Verificar si hay datos para mostrar
         if (dataPoints == null || dataPoints.length == 0) {
-            drawNoDataMessage(g);
+            g2d.setColor(Color.RED);
+            g2d.drawString("No hay datos para mostrar", getWidth() / 2 - 80, getHeight() / 2);
             return;
         }
 
-        Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         // Dimensiones del área de dibujo

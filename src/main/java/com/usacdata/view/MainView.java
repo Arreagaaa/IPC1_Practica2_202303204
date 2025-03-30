@@ -196,8 +196,10 @@ public class MainView extends BaseView {
         fileChooser.setDialogTitle("Seleccionar archivo de datos");
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
-        // Configurar para aceptar solo archivos .ibpc1 (requisito sección B)
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos de datos IBPC1 (*.ibpc1)", "ibpc1"));
+        // Configurar para aceptar solo archivos .ibpc1 y .csv
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "Archivos de datos (*.csv, *.ibpc1)", "csv", "ibpc1");
+        fileChooser.setFileFilter(filter);
 
         int result = fileChooser.showOpenDialog(this);
 
@@ -237,6 +239,16 @@ public class MainView extends BaseView {
 
             FileReader fileReader = new FileReader();
             FileReader.FileReaderResult result = fileReader.readDataFromFile(selectedFile);
+
+            if (result == null) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        fileReader.getErrorMessage(),
+                        "Error al cargar archivo",
+                        JOptionPane.ERROR_MESSAGE);
+                statusLabel.setText("Error al cargar el archivo");
+                return;
+            }
 
             if (result != null && result.getDataPoints() != null) {
                 // Depuración
